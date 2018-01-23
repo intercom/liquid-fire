@@ -37,6 +37,7 @@ let TransitionMap = Service.extend({
   },
 
   decrementRunningTransitions() {
+    if (this.isDestroying) { return; }
     this.activeCount--;
     next(() => {
       this._maybeResolveIdle();
@@ -48,6 +49,7 @@ let TransitionMap = Service.extend({
       return this._waitingPromise;
     }
     return this._waitingPromise = new EmberPromise((resolve) => {
+      if (this.isDestroying) { return; }
       this._resolveWaiting = resolve;
       next(() => {
         this._maybeResolveIdle();
